@@ -103,6 +103,7 @@ uint32_t _network_get_interface_ip(uint32_t peer_addr)
         assert(0);
         return 0;
     }
+    printf("h addr: %p\n", h);
 
     /* Solaris sometimes sets errno=EINVAL even on a successful return
      * from gethostbyname_r...
