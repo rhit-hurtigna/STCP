@@ -28,6 +28,8 @@ uint16_t _mysock_tcp_checksum(uint32_t src_addr /*network byte order*/,
         src_addr, dst_addr, 0, IPPROTO_TCP, htons(len)
     };
 
+	printf("src_addr: %u, dst_addr: %u\n", ntohl(src_addr), ntohl(dst_addr));
+
     unsigned int k;
     int32_t sum = 0;
 
