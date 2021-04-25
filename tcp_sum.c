@@ -103,6 +103,7 @@ bool_t _mysock_verify_checksum(const mysock_context_t *ctx,
     struct tcphdr* header = ((struct tcphdr *) packet);
     printf("%d %d %u %u %u %u %u\n", ntohs(header->th_sport), ntohs(header->th_dport), ntohl(header->th_seq), ntohl(header->th_ack), header->th_flags, ntohs(header->th_win), ntohs(header->th_sum));
     printf("my_sum: %u\n", my_sum);
+    printf("packet sum, network order: %u\n", ntohs(header->th_win));
     return my_sum == ((struct tcphdr *) packet)->th_sum;
 }
 
