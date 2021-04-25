@@ -161,7 +161,6 @@ static tcphdr* ack(tcp_seq seqNum, tcp_seq ackNum, uint16_t win) {
  * Use host order.
  */
 static tcphdr* make_header(tcp_seq seqNum, tcp_seq ackNum, uint16_t win, bool_t fin, bool_t syn, bool_t ack) {
-	printf("making header...\n");
 	tcphdr* header = (tcphdr*) malloc(sizeof(struct tcphdr));
 	assert(header);
 	memset(header, 0, sizeof(*header));
