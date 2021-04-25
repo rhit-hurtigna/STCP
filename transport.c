@@ -312,9 +312,15 @@ static bool_t recv_syn(mysocket_t sd, context_t* ctx) {
 
 /* Sets current to be RTTADJUST times the timeout plus the current time */
 static void set_timeout(timespec* current, context_t* ctx) {
-	current->tv_nsec += ctx->timeout->tv_nsec * RTTADJUST;
+	timespec_get(current, TIME_UTC);
+	printf("Current secs: %lu\n", current->tv_sec);
+	printf("B4CurNSec: %ld\n", current->tv_nsec);
+	current->tv_nsec = (long) (current->tv_nsec + ctx->timeout->tv_nsec) * RTTADJUST;
+	printf("IncNddSec: %ld\n", current->tv_nsec);
 	current->tv_sec += ctx->timeout->tv_sec * RTTADJUST + (current->tv_nsec - (current->tv_nsec % 1000000000)) / 1000000000;
-	current->tv_nsec = current->tv_nsec % 1000000000;
+	current->tv_nsec = (long) current->tv_nsec % 1000000000;
+	printf("Afternt secs: %lu\n", current->tv_sec);
+	printf("After Nsecs: %ld\n", current->tv_nsec);
 }
 
 
