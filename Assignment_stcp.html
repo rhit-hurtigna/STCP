@@ -1,0 +1,1010 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+  <title>STCP</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link rel="File-List" href="stcp.files/filelist.xml">
+  <link rel="Edit-Time-Data" href="stcp.files/editdata.mso">
+<!--[if !mso]>
+<STYLE>
+v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</STYLE>
+<![endif]-->
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Template>Normal</o:Template>
+  <o:LastAuthor>Zhen ZHU</o:LastAuthor>
+  <o:Revision>7</o:Revision>
+  <o:TotalTime>53</o:TotalTime>
+  <o:Created>2008-10-09T18:20:00Z</o:Created>
+  <o:LastSaved>2008-10-09T19:14:00Z</o:LastSaved>
+  <o:Pages>1</o:Pages>
+  <o:Words>3858</o:Words>
+  <o:Characters>21995</o:Characters>
+  <o:Company>Purdue University</o:Company>
+  <o:Lines>183</o:Lines>
+  <o:Paragraphs>51</o:Paragraphs>
+  <o:CharactersWithSpaces>25802</o:CharactersWithSpaces>
+  <o:Version>11.9999</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]-->
+<!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:SpellingState>Clean</w:SpellingState>
+  <w:GrammarState>Clean</w:GrammarState>
+  <w:ValidateAgainstSchemas/>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:Compatibility>
+   <w:UseFELayout/>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]-->
+<!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" LatentStyleCount="156">
+ </w:LatentStyles>
+</xml><![endif]-->
+  <link rel="Stylesheet" type="text/css" media="all"
+ href="stcp_files/vns_wiki.css">
+  <style> <!-- /* List Definitions */ @list l0 {mso-list-id:102191637; mso-list-template-ids:1813153088;}
+	@list l0:level1 {mso-level-number-format:bullet; mso-level-text:?; mso-level-tab-stop:36.0pt; mso-level-number-position:left; text-indent:-18.0pt; mso-ansi-font-size:10.0pt; font-family:Symbol;}
+	@list l1 {mso-list-id:234123266; mso-list-template-ids:-1648332236;}
+	@list l1:level1 {mso-level-number-format:bullet; mso-level-text:?; mso-level-tab-stop:36.0pt; mso-level-number-position:left; text-indent:-18.0pt; mso-ansi-font-size:10.0pt; font-family:Symbol;}
+	@list l2 {mso-list-id:249897106; mso-list-template-ids:-1863022360;}
+	@list l2:level1 {mso-level-number-format:bullet; mso-level-text:?; mso-level-tab-stop:36.0pt; mso-level-number-position:left; text-indent:-18.0pt; mso-ansi-font-size:10.0pt; font-family:Symbol;}
+	@list l3 {mso-list-id:312031109; mso-list-template-ids:1310460246;}
+	@list l3:level1 {mso-level-number-format:bullet; mso-level-text:?; mso-level-tab-stop:36.0pt; mso-level-number-position:left; text-indent:-18.0pt; mso-ansi-font-size:10.0pt; font-family:Symbol;}
+	@list l4 {mso-list-id:328602019; mso-list-template-ids:-2117185764;}
+	@list l4:level1 {mso-level-number-format:bullet; mso-level-text:?; mso-level-tab-stop:36.0pt; mso-level-number-position:left; text-indent:-18.0pt; mso-ansi-font-size:10.0pt; font-family:Symbol;}
+	@list l5 {mso-list-id:454104946; mso-list-template-ids:1237369464;}
+	@list l5:level1 {mso-level-number-format:bullet; mso-level-text:?; mso-level-tab-stop:36.0pt; mso-level-number-position:left; text-indent:-18.0pt; mso-ansi-font-size:10.0pt; font-family:Symbol;}
+	@list l5:level2 {mso-level-number-format:bullet; mso-level-text:o; mso-level-tab-stop:72.0pt; mso-level-number-position:left; text-indent:-18.0pt; mso-ansi-font-size:10.0pt; font-family:"Courier New"; mso-bidi-font-family:"Times New Roman";}
+	@list l5:level3 {mso-level-number-format:bullet; mso-level-text:?; mso-level-tab-stop:108.0pt; mso-level-number-position:left; text-indent:-18.0pt; mso-ansi-font-size:10.0pt; font-family:Wingdings;}
+	@list l6 {mso-list-id:566383262; mso-list-template-ids:1745230584;}
+	@list l6:level1 {mso-level-number-format:bullet; mso-level-text:?; mso-level-tab-stop:36.0pt; mso-level-number-position:left; text-indent:-18.0pt; mso-ansi-font-size:10.0pt; font-family:Symbol;}
+	@list l7 {mso-list-id:617495417; mso-list-template-ids:-1020232008;}
+	@list l7:level1 {mso-level-start-at:5; mso-level-text:%1; mso-level-tab-stop:18.0pt; mso-level-number-position:left; margin-left:18.0pt; text-indent:-18.0pt;}
+	@list l7:level2 {mso-level-text:"%1\.%2"; mso-level-tab-stop:18.0pt; mso-level-number-position:left; margin-left:18.0pt; text-indent:-18.0pt;}
+	@list l7:level3 {mso-level-text:"%1\.%2\.%3"; mso-level-tab-stop:36.0pt; mso-level-number-position:left; margin-left:36.0pt; text-indent:-36.0pt;}
+	@list l7:level4 {mso-level-text:"%1\.%2\.%3\.%4"; mso-level-tab-stop:36.0pt; mso-level-number-position:left; margin-left:36.0pt; text-indent:-36.0pt;}
+	@list l7:level5 {mso-level-text:"%1\.%2\.%3\.%4\.%5"; mso-level-tab-stop:54.0pt; mso-level-number-position:left; margin-left:54.0pt; text-indent:-54.0pt;}
+	@list l7:level6 {mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6"; mso-level-tab-stop:54.0pt; mso-level-number-position:left; margin-left:54.0pt; text-indent:-54.0pt;}
+	@list l7:level7 {mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7"; mso-level-tab-stop:54.0pt; mso-level-number-position:left; margin-left:54.0pt; text-indent:-54.0pt;}
+	@list l7:level8 {mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8"; mso-level-tab-stop:72.0pt; mso-level-number-position:left; margin-left:72.0pt; text-indent:-72.0pt;}
+	@list l7:level9 {mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.%9"; mso-level-tab-stop:72.0pt; mso-level-number-position:left; margin-left:72.0pt; text-indent:-72.0pt;}
+	@list l8 {mso-list-id:809133515; mso-list-template-ids:-1232985170;}
+	@list l8:level1 {mso-level-number-format:bullet; mso-level-text:?; mso-level-tab-stop:36.0pt; mso-level-number-position:left; text-indent:-18.0pt; mso-ansi-font-size:10.0pt; font-family:Symbol;}
+	@list l9 {mso-list-id:927081882; mso-list-template-ids:1996535286;}
+	@list l9:level1 {mso-level-number-format:bullet; mso-level-text:?; mso-level-tab-stop:36.0pt; mso-level-number-position:left; text-indent:-18.0pt; mso-ansi-font-size:10.0pt; font-family:Symbol;}
+	@list l10 {mso-list-id:1054230602; mso-list-template-ids:205163982;}
+	@list l10:level1 {mso-level-tab-stop:36.0pt; mso-level-number-position:left; text-indent:-18.0pt;}
+	@list l11 {mso-list-id:1097483945; mso-list-template-ids:784474870;}
+	@list l11:level1 {mso-level-number-format:bullet; mso-level-text:?; mso-level-tab-stop:36.0pt; mso-level-number-position:left; text-indent:-18.0pt; mso-ansi-font-size:10.0pt; font-family:Symbol;}
+	@list l12 {mso-list-id:1266033716; mso-list-template-ids:1008735122;}
+	@list l12:level1 {mso-level-number-format:bullet; mso-level-text:?; mso-level-tab-stop:36.0pt; mso-level-number-position:left; text-indent:-18.0pt; mso-ansi-font-size:10.0pt; font-family:Symbol;}
+	@list l13 {mso-list-id:1267926789; mso-list-template-ids:-377316100;}
+	@list l13:level1 {mso-level-number-format:bullet; mso-level-text:?; mso-level-tab-stop:36.0pt; mso-level-number-position:left; text-indent:-18.0pt; mso-ansi-font-size:10.0pt; font-family:Symbol;}
+	@list l14 {mso-list-id:1330645258; mso-list-template-ids:-283722868;}
+	@list l14:level1 {mso-level-tab-stop:36.0pt; mso-level-number-position:left; text-indent:-18.0pt;}
+	@list l15 {mso-list-id:1614745530; mso-list-template-ids:-185671212;}
+	@list l15:level1 {mso-level-number-format:bullet; mso-level-text:?; mso-level-tab-stop:36.0pt; mso-level-number-position:left; text-indent:-18.0pt; mso-ansi-font-size:10.0pt; font-family:Symbol;}
+	ol {margin-bottom:0cm;}
+	ul {margin-bottom:0cm;}
+	--></style>
+<!--[if gte mso 10]>
+
+<![endif]--><!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="2050"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+<body style="" lang="EN-US" link="blue" vlink="blue">
+<h1 class="Section1"><a name="STCP:_Implementing_a_Reliable_Transport_"></a><span
+ lang="EN-US">STCP:
+Implementing a Reliable Transport Layer</span></h1>
+<div class="Section1">
+<ul type="disc">
+  <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="stcp.zip">Assignment source code</a> </span></li>
+</ul>
+</div>
+<table class="MsoNormalTable" style="" border="0" cellpadding="0">
+  <tbody>
+    <tr style="">
+      <td>
+      <div id="toctitle">
+      <h2><span lang="EN-US">Contents</span></h2>
+      </div>
+      <ul type="disc">
+        <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#STCP:_Implementing_a_Reliable_Transport"> <span
+ class="tocnumber">1</span> <span class="toctext">STCP: Implementing a
+Reliable Transport Layer</span></a> </span>
+          <ul type="circle">
+            <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#Overview"> <span class="tocnumber">1.1</span> <span
+ class="toctext">Overview</span></a></span> </li>
+            <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#The_Structure_of_the_Code"> <span class="tocnumber">1.2</span>
+              <span class="toctext">The Structure of the Code</span></a>
+              </span>
+              <ul type="square">
+                <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#Network_Layer"> <span class="tocnumber">1.2.1</span> <span
+ class="toctext">Network Layer</span></a></span> </li>
+                <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#Transport_Layer"> <span class="tocnumber">1.2.2</span> <span
+ class="toctext">Transport Layer</span></a></span> </li>
+                <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#Application_Layer"> <span class="tocnumber">1.2.3</span> <span
+ class="toctext">Application Layer</span></a></span></li>
+              </ul>
+            </li>
+            <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#Getting_Started"> <span class="tocnumber">1.3</span> <span
+ class="toctext">Getting Started</span></a></span> </li>
+            <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#MYSOCK_Layer_Definition"> <span class="tocnumber">1.4</span> <span
+ class="toctext"> MYSOCK Definition</span></a> </span>
+              <ul type="square">
+                <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#Overview_2"> <span class="tocnumber">1.4.1</span> <span
+ class="toctext">Overview</span></a></span> </li>
+                <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#STCP_Packet_Format"> <span class="tocnumber">1.4.2</span> <span
+ class="toctext">STCP Packet Format</span></a></span> </li>
+                <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#Sequence_Numbers"> <span class="tocnumber">1.4.3</span> <span
+ class="toctext">Sequence Numbers</span></a></span> </li>
+                <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#Data_Packets"> <span class="tocnumber">1.4.4</span> <span
+ class="toctext">Data Packets</span></a></span> </li>
+                <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#ACK_Packets"> <span class="tocnumber">1.4.5</span> <span
+ class="toctext">ACK Packets</span></a></span> </li>
+                <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#Sliding_Windows"> <span class="tocnumber">1.4.6</span> <span
+ class="toctext">Sliding Windows</span></a></span> </li>
+                <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#TCP_Options"> <span class="tocnumber">1.4.7</span> <span
+ class="toctext">TCP Options</span></a></span> </li>
+                <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#Retransmissions"> <span class="tocnumber">1.4.8</span> <span
+ class="toctext">Retransmissions</span></a></span> </li>
+                <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#Network_Initiation"> <span class="tocnumber">1.4.9</span> <span
+ class="toctext">Network Initiation</span></a></span> </li>
+                <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#Network_Termination"> <span class="tocnumber">1.4.10</span> <span
+ class="toctext">Network Termination</span></a></span> </li>
+                <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#Glossary"> <span class="tocnumber">1.4.11</span> <span
+ class="toctext">Glossary</span></a></span></li>
+              </ul>
+            </li>
+            <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#Transport_Layer_2"> <span class="tocnumber">1.5</span> <span
+ class="toctext">Transport Layer</span></a></span> </li>
+            <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#Network_Layer_2"> <span class="tocnumber">1.6</span> <span
+ class="toctext">Network Layer</span></a></span> </li>
+            <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#Descriptions_of_Milestones"> <span class="tocnumber">1.7</span>&nbsp;Summary</a></span>
+            </li>
+            <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#Testing_Your_Code"> <span class="tocnumber">1.8</span>&nbsp; <span
+ class="toctext"> Grading</span></a></span> </li>
+            <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#Miscellaneous_Notes_and_Hints"> <span class="tocnumber">1.9</span>
+              <span class="toctext">Miscellaneous Notes and Hints</span></a></span>
+            </li>
+            <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#Deliverables"> <span class="tocnumber">1.10</span> <span
+ class="toctext">Deliverables</span></a></span> </li>
+            <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#_How_to_Submit">1.11 How to Submit</a></span> </li>
+            <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="#Links"> <span class="tocnumber">1.12</span> <span
+ class="toctext">Links</span></a></span></li>
+          </ul>
+        </li>
+      </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p><span lang="EN-US">
+<script type="text/javascript">
+ if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } 
+				</script><o:p></o:p>
+</span></p>
+<h2><a name="Overview"></a><span lang="EN-US">Overview </span></h2>
+
+<p><span lang="EN-US">This is an assignment to implement TCP on top
+of an unreliable channel.  Make sure to read the following helpful material
+to get started.  This assignment may be used toward incentive
+points by implementing just the simple version.  This assignment
+may also be used for a final project if along with the simple
+version, congestion control, fast retransmits, etc., should
+be included.</span></p>
+
+ 
+<p><span lang="EN-US">To help you get started, we're providing you with
+a skeleton system in which you will implement the MYSOCK and STCP
+layers.
+In fact,&nbsp;most of &nbsp;MYSOCK has already been implemented for
+you; you get to add the
+functionality needed for the transport layer. The skeleton consists of
+a
+network layer, a bogus transport layer, and also a dummy client and
+server
+application to help you debug your socket and transport layer. When you
+have
+debugged your transport layer and had it work with the dummy client and
+server,
+you'll be compiling it with the sample solution of the first
+programming assignment.
+</span></p>
+<p><span lang="EN-US">In this assignment, we'll provide a network layer
+which has
+two modes: Reliable mode as well <span class="GramE">Unreliable</span>
+mode. In
+the reliable mode, you can believe that no packet will get lost in the
+perfect
+world (The local area network on campus is almost
+a perfect
+world). In the Unreliable mode, packets do get lost! (This is done by
+simulation, which randomly drops your packets in the transport layer we
+provide.)&nbsp;
+<span style="">&nbsp;</span></span></p>
+<p><b><i><span lang="EN-US">Important: STCP is not TCP! While STCP is
+designed to
+be compatible with TCP, there are many distinct differences between the
+two
+protocols. When in doubt, the specifications in this assignment
+description
+should be used in your implementation.</span></i></b><span lang="EN-US"></span></p>
+<h2><a name="The_Structure_of_the_Code"></a><span lang="EN-US">The
+Structure of
+the Code </span></h2>
+<h3><a name="Network_Layer"></a><span lang="EN-US">Network Layer </span></h3>
+<p><span lang="EN-US">At the lowest layer is the <i>network</i> layer.
+We provide
+you with a fully functional network layer that emulates an unreliable
+datagram
+communication service with a peer application; i.e. it will send and
+receive data
+between a client and server, but does not guarantee that the data will
+arrive,
+or that it will arrive in order. As you'll see if you delve into our
+code, we
+actually implemented the so-called unreliable datagram service over a
+regular
+TCP connection. For the purposes of this assignment, it just appears to
+you and
+your code as a network layer. </span></p>
+<p><span lang="EN-US">You're going to find it helpful to <i>force</i>
+the network
+layer to be unreliable. To emulate the behavior of a congested
+multi-path
+network, setting the <span class="SpellE"><i>is_reliable</i></span>
+parameter to
+false when creating a socket (use the <i>-U</i> flag when running the
+program&nbsp;with BOTH the client and server)
+will cause the network layer to randomly reorder and drop packets.
+You'll see
+an example of how this is done in our dummy client/server code. </span></p>
+<h3><a name="Transport_Layer"></a><span lang="EN-US">Transport Layer </span></h3>
+<p><span lang="EN-US">The next layer up is the <i>transport layer</i>.
+We provide
+you with a bogus minimal transport layer in which some basic functions
+are
+already implemented. It is provided only so that the client and server
+will
+compile (but <b>NOT</b> run), and to give you an example of how to use
+the
+socket/transport/network layer calls. </span></p>
+<h3><a name="Application_Layer"></a><span lang="EN-US">Application
+Layer </span></h3>
+<p><span lang="EN-US">The <i>application</i> layers that we give you
+are the
+dummy client and dummy server. The dummy client and server are very
+simple and
+are provided to aid you with the debugging of your transport layer.
+When
+executed, the client prompts for a filename which it sends to the
+server. The
+server responds by sending back the contents of the file. The client
+stores
+this file locally under the filename "rcvd". The client can also ask
+for a file from the server on the command line in a non-interactive
+mode. The
+client and server work as expected if the file "rcvd" on the machine
+where the client is running is identical to the file asked for at the
+server
+machine. You may change the client and server as much as you like for
+debugging
+purposes. We will not use your versions of the dummy client and server
+for
+grading. Both client and server accept the -U flag to make the network
+layer
+unreliable. The client also accepts the -q option, which suppresses the
+output
+of the received data to the file. </span></p>
+<h2><a name="Getting_Started"></a><span lang="EN-US">Getting Started </span></h2>
+<p><span lang="EN-US">Download the STCP zip file linked at the top of
+this
+document and extract it into a new directory in your <span
+ class="GramE">Unix</span>
+account. A Makefile is included for you in the zip file. If for some
+reason you
+need to do something different with </span><code><span lang="EN-US">make</span></code><span
+ lang="EN-US"> for testing purposes, please create your own Makefile
+and build
+with it by calling </span><code><span lang="EN-US">make -f <span
+ class="SpellE">yourMakefile</span></span></code><span lang="EN-US">
+during development. <b>Your code must build with the standard Makefile
+when you submit!</b> </span></p>
+<h2><a name="MYSOCK_Layer_Definition"></a><span lang="EN-US"> MYSOCK
+Definition </span></h2>
+<p><span lang="EN-US">This section details the protocol your transport
+layer will
+implement. Be sure to also read <a
+ href="http://www.ietf.org/rfc/rfc793.txt"
+ title="http://www.ietf.org/rfc/rfc793.txt">RFC 793</a>, which
+describes TCP in
+more detail. </span></p>
+<h3><a name="Overview_2"></a><span lang="EN-US">Overview </span></h3>
+<p><span lang="EN-US">STCP is a full duplex, connection oriented
+transport layer
+that guarantees in-order delivery. Full duplex means that data flows in
+both
+directions over the same connection. Guaranteed delivery means that
+your
+protocol ensures that, short of catastrophic network failure, data sent
+by one
+host will be delivered to its peer in the correct order. Connection
+oriented
+means that the packets you send to the peer are in the context of some
+pre-existing state maintained by the transport layer on each host. </span></p>
+<p><span lang="EN-US">STCP treats application data as a stream. This
+means that
+no artificial boundaries are imposed on the data by the transport
+layer. If a
+host calls <span class="SpellE"><span class="GramE">mywrite</span> </span><span
+ class="GramE">(</span>) twice with 256 bytes each time, and then the
+peer calls <span class="SpellE">myread</span>() with a buffer of 512
+bytes, it will receive all
+512 bytes of available data, not just the first 256 bytes. It is <span
+ class="SpellE">STCP's</span> job to break up the data into packets and
+reassemble
+the data on the other side. </span></p>
+<p><span lang="EN-US"> STCP labels one side
+of a connection active and the other end passive. Typically, the client
+is
+the active end of the connection and server the passive end. But this
+is
+just an artificial labeling; the same process can be active on one
+connection
+and passive on another . </span></p>
+<p><span lang="EN-US">The networking terms we use in the protocol
+specification
+have precise meanings in terms of STCP. Please refer to the glossary. </span></p>
+<h3><a name="STCP_Packet_Format"></a><span lang="EN-US">STCP Packet
+Format </span></h3>
+<p><span lang="EN-US">An STCP packet has a maximum payload size of 500
+bytes. It has the
+same header format as TCP. The header format is defined in <span
+ class="SpellE">transport.h</span>
+as follows: </span></p>
+<pre><span class="SpellE"><span class="GramE"><span lang="EN-US">typedef</span></span></span><span
+ lang="EN-US"> uint32_t <span class="SpellE">tcp_seq</span>;</span></pre>
+<pre><span lang="EN-US"><o:p>&nbsp;</o:p></span></pre>
+<pre><span class="SpellE"><span class="GramE"><span lang="EN-US">struct</span></span></span><span
+ lang="EN-US"> <span class="SpellE">tcphdr</span> {</span></pre>
+<pre><span lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>uint16_t <span
+ class="SpellE">th_sport</span>;<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>/* source port */</span></pre>
+<pre><span lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>uint16_t <span
+ class="SpellE">th_dport</span>;<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>/* destination port */</span></pre>
+<pre><span lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+ class="SpellE">tcp_seq</span> <span class="SpellE">th_seq</span>;<span
+ style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>/* sequence number */</span></pre>
+<pre><span lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+ class="SpellE">tcp_seq</span> <span class="SpellE">th_ack</span>;<span
+ style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>/* acknowledgment number */</span></pre>
+<pre><span lang="EN-US">#<span class="SpellE">ifdef</span> _BIT_FIELDS_LTOH</span></pre>
+<pre><span lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+ class="SpellE">u_int</span><span style="">&nbsp;&nbsp; </span>th_x2:4,<span
+ style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>/* (unused) */</span></pre>
+<pre><span lang="EN-US"><span style="">&nbsp; </span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>th_off:4;<span
+ style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>/* data offset */</span></pre>
+<pre><span lang="EN-US">#else</span></pre>
+<pre><span lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+ class="SpellE">u_int</span><span style="">&nbsp;&nbsp; </span>th_off:4,<span
+ style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>/* data offset */</span></pre>
+<pre><span lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>th_x2:4;<span
+ style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>/* (unused) */</span></pre>
+<pre><span lang="EN-US">#<span class="SpellE">endif</span></span></pre>
+<pre><span lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>uint8_t <span
+ class="SpellE">th_flags</span>;</span></pre>
+<pre><span lang="EN-US">#define TH_<span class="GramE">FIN<span style="">&nbsp; </span>0x01</span></span></pre>
+<pre><span lang="EN-US">#define TH_<span class="GramE">SYN<span style="">&nbsp; </span>0x02</span></span></pre>
+<pre><span lang="EN-US">#define TH_<span class="GramE">RST<span style="">&nbsp; </span>0x04</span></span></pre>
+<pre><span lang="EN-US">#define TH_PUSH 0x08</span></pre>
+<pre><span lang="EN-US">#define TH_<span class="GramE">ACK<span style="">&nbsp; </span>0x10</span></span></pre>
+<pre><span lang="EN-US">#define TH_<span class="GramE">URG<span style="">&nbsp; </span>0x20</span></span></pre>
+<pre><span lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>uint16_t <span
+ class="SpellE">th_win</span>;<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>/* window */</span></pre>
+<pre><span lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>uint16_t <span
+ class="SpellE">th_sum</span>;<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>/* checksum */</span></pre>
+<pre><span lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>uint16_t <span
+ class="SpellE">th_urp</span>;<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>/* urgent pointer */</span></pre>
+<pre><span lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+ style="">&nbsp;&nbsp;</span>/* options follow */</span></pre>
+<pre><span lang="EN-US">};</span></pre>
+<pre><span lang="EN-US"><o:p>&nbsp;</o:p></span></pre>
+<pre><span class="SpellE"><span class="GramE"><span lang="EN-US">typedef</span></span></span><span
+ lang="EN-US"> <span class="SpellE">struct</span> <span class="SpellE">tcphdr</span> <span
+ class="SpellE">STCPHeader</span>;</span></pre>
+<p><span lang="EN-US">For this assignment, you are&nbsp;NOT required to
+handle all
+fields in this header. Specifically, the provided wrapper code sets <span
+ class="SpellE">th_sport</span>, <span class="SpellE">th_dport</span>,
+and <span class="SpellE">th_sum</span>, while <span class="SpellE">th_urp</span>
+is
+unused; you may thus ignore these fields. Similarly, you are&nbsp;NOT
+required to handle all
+legal flags specified here: TH_RST, TH_PUSH, and TH_URG are ignored by
+STCP.
+The fields STCP uses are shown in the following table. </span></p>
+<p><span lang="EN-US">The packet header field format (for the relevant
+fields) is
+as follows: </span></p>
+<div align="center">
+<table class="MsoNormalTable" style="border: 1.5pt outset ;" border="1"
+ cellpadding="0">
+  <tbody>
+    <tr style="">
+      <td>
+      <p class="MsoNormal" style="text-align: center;" align="center"><b><span
+ lang="EN-US">Field <o:p></o:p></span></b></p>
+      </td>
+      <td>
+      <p class="MsoNormal" style="text-align: center;" align="center"><b><span
+ lang="EN-US">Type <o:p></o:p></span></b></p>
+      </td>
+      <td>
+      <p class="MsoNormal" style="text-align: center;" align="center"><b><span
+ lang="EN-US">Description <o:p></o:p></span></b></p>
+      </td>
+    </tr>
+    <tr style="">
+      <td>
+      <p class="MsoNormal"><span class="SpellE"><span lang="EN-US">th_seq</span>
+      </span><span lang="EN-US"></span></p>
+      </td>
+      <td>
+      <p class="MsoNormal"><span class="SpellE"><span lang="EN-US">tcp_seq</span>
+      </span><span lang="EN-US"></span></p>
+      </td>
+      <td>
+      <p class="MsoNormal"><span lang="EN-US">Sequence number
+associated with this packet. </span></p>
+      </td>
+    </tr>
+    <tr style="">
+      <td>
+      <p class="MsoNormal"><span class="SpellE"><span lang="EN-US">th_ack</span>
+      </span><span lang="EN-US"></span></p>
+      </td>
+      <td>
+      <p class="MsoNormal"><span class="SpellE"><span lang="EN-US">tcp_seq</span>
+      </span><span lang="EN-US"></span></p>
+      </td>
+      <td>
+      <p class="MsoNormal"><span lang="EN-US">If this is an ACK packet,
+the sequence number being acknowledged by this packet. This may be
+included in any packet. </span></p>
+      </td>
+    </tr>
+    <tr style="">
+      <td>
+      <p class="MsoNormal"><span class="SpellE"><span lang="EN-US">th_off</span>
+      </span><span lang="EN-US"></span></p>
+      </td>
+      <td>
+      <p class="MsoNormal"><span lang="EN-US">4 bits </span></p>
+      </td>
+      <td>
+      <p class="MsoNormal"><span lang="EN-US">The offset at which data
+begins in the packet, in multiples of 32-bit words. (The TCP header may
+be padded, so as to always be some multiple of 32-bit words long). If
+there are no options in the header, this is equal to 5 (i.e. data
+begins twenty bytes into the packet). </span></p>
+      </td>
+    </tr>
+    <tr style="">
+      <td>
+      <p class="MsoNormal"><span class="SpellE"><span lang="EN-US">th_flags</span>
+      </span><span lang="EN-US"></span></p>
+      </td>
+      <td>
+      <p class="MsoNormal"><span lang="EN-US">uint8_t </span></p>
+      </td>
+      <td>
+      <p class="MsoNormal"><span lang="EN-US">Zero or more of the flags
+(TH_FIN, TH_SYN, etc.), <span class="SpellE">or'ed</span> together. </span></p>
+      </td>
+    </tr>
+    <tr style="">
+      <td>
+      <p class="MsoNormal"><span class="SpellE"><span lang="EN-US">th_win</span>
+      </span><span lang="EN-US"></span></p>
+      </td>
+      <td>
+      <p class="MsoNormal"><span lang="EN-US">uint16_t </span></p>
+      </td>
+      <td>
+      <p class="MsoNormal"><span lang="EN-US">Advertised receiver
+window in bytes, i.e. the amount of outstanding data the host sending
+the packet is willing to accept. </span></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h3><a name="Sequence_Numbers"></a><span lang="EN-US">Sequence Numbers </span></h3>
+<p><span lang="EN-US">STCP assigns sequence numbers to the streams of
+application
+data by numbering the bytes. The rules for sequence numbers are: </span></p>
+<ul type="disc">
+  <li class="MsoNormal" style=""> <span lang="EN-US">Sequence numbers
+sequentially number the SYN flag, FIN flag, and bytes of data, starting
+with a randomly chosen sequence number between 0 and 199, both
+inclusive. (The sequence numbers are exchanged using a 3-way SYN
+handshake in STCP as explained later). </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">The transport
+layer manages two streams for each connection: incoming and outgoing
+data. The sequence numbers of these streams are independent of each
+other. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">Both SYN and FIN
+indicators are associated with one byte of the sequence space. </span>
+  </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">The sequence
+number should always be set in every packet. If the packet is a pure
+ACK packet (i.e., no data, and the SYN/FIN flags are unset), the
+sequence number should be set to the next unsent sequence number. (This
+is purely for compatibility with real TCP implementations in unreliable
+mode; they discard packets with sequence numbers that fall well outside
+the sender's window. STCP itself doesn't care about sequence numbers in
+pure ACK packets). </span></li>
+</ul>
+<h3><a name="Data_Packets"></a><span lang="EN-US">Data Packets </span></h3>
+<p><span lang="EN-US">The following rules apply to STCP data packets: </span></p>
+<ul type="disc">
+  <li class="MsoNormal" style=""> <span lang="EN-US">The maximum
+payload size is 500 bytes. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">The <span
+ class="SpellE">th_seq</span> field in the packet header contains the
+sequence number of the first byte in the payload. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">Data packets are
+sent as soon as data is available from the application. STCP performs
+no optimizations for grouping small amounts of data on the first
+transmission. </span></li>
+</ul>
+<h3><a name="ACK_Packets"></a><span lang="EN-US">ACK Packets </span></h3>
+<p><span lang="EN-US">In order to guarantee reliable delivery, data
+must be <span class="SpellE"><span class="GramE">be</span> </span>
+acknowledged. The rules for
+acknowledging data in STCP are: </span></p>
+<ul type="disc">
+  <li class="MsoNormal" style=""> <span lang="EN-US">Data is
+acknowledged by setting the ACK bit in the flags field in the packet
+header. If this bit is set, then the <span class="SpellE">th_ack</span>
+field contains the sequence number of the next byte of data the
+receiver expects (i.e. one past the last byte of data already
+received). This is true no matter what data is being acknowledged. The <span
+ class="SpellE">th_seq</span> field should be set to the sequence
+number that would be associated with the next byte of data sent to the
+peer. The <span class="SpellE">th_ack</span> field should be set
+whenever possible (this again isn't required by STCP, but is done for
+compatibility with standard TCP). </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">Data may
+accompany an acknowledgment. STCP is not required to generate such
+packets (i.e. if you have outstanding data and acknowledgments to send,
+you may send these separately), but it is required to be capable of
+handling such packets. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">Acknowledgments
+are not delayed in STCP as they are in TCP. An acknowledgment should be
+sent as soon as data is received. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">If a packet is
+received that contains duplicate data, a new acknowledgment should be
+sent. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">Acknowledgments
+are only sent for the last contiguous received piece of data. For
+example, assume the last acknowledgment sent was 10. A packet
+containing data with sequence number 15 of length 5 is received. An
+acknowledgment for this packet cannot be sent because of the gap at
+sequence number 10 of length 5. Instead, an ACK should be sent for 10
+again. However, once all the data in this range has been received, the
+correct acknowledgment to send is for sequence number 20. </span></li>
+</ul>
+<h3><a name="Sliding_Windows"></a><span lang="EN-US">Sliding Windows </span></h3>
+<p><span lang="EN-US">There are two windows that you will have to take
+care of:
+the receiver and sender windows. </span></p>
+<p><span lang="EN-US">The receiver window is the range of sequence
+numbers which
+the receiver is willing to accept at any given instant. The window
+ensures that
+the transmitter does not send more data than the receiver can handle. </span></p>
+<p><span lang="EN-US">Like TCP, STCP uses a sliding window protocol.
+The
+transmitter sends data with a given sequence number as and when data
+has been
+acknowledged. The size of the sender window indicates the maximum
+amount of
+data that can be unacknowledged at any instant. Its size is equal to
+the other
+side's receiver window. </span></p>
+<p><span lang="EN-US">The rules for managing the windows are: </span></p>
+<ul type="disc">
+  <li class="MsoNormal" style=""> <span lang="EN-US">The local
+receiver window has a fixed size of 5120 bytes. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">The sender window
+is the minimum of the other side's advertised receiver window, and the
+congestion window. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">The congestion
+window has a fixed size of 5120 bytes. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">As stated in the
+acknowledgment section, data which is received with sequence numbers
+lower than the start of the receiver window generate an appropriate
+acknowledgment, but the data is discarded. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">Received data
+which has a sequence number higher than that of the last byte of the
+receiver window is discarded and remains unacknowledged. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">Note that
+received data may cross either end of the current receiver window; in
+this case, the data is split into two parts and each part is processed
+appropriately. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">Do not send any
+data outside of your sender window. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">The first byte of
+all windows is always the last acknowledged byte of data. For example,
+for the receiver window, if the last acknowledgment was sequence number
+8192, then the receiver is willing to accept data with sequence numbers
+of 8192 through 11263 (=8192+3072-1), inclusive. </span></li>
+</ul>
+<h3><a name="TCP_Options"></a><span lang="EN-US">TCP Options </span></h3>
+<p><span lang="EN-US">The following rules apply for handling TCP
+options: </span></p>
+<ul type="disc">
+  <li class="MsoNormal" style=""> <span lang="EN-US">STCP does not
+generate options in the packets it sends. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">STCP ignores
+options in any packets sent by a peer. It must be capable of correctly
+handling packets that include options. </span></li>
+</ul>
+<h3><a name="Retransmissions"></a><span lang="EN-US">Retransmissions </span></h3>
+<p><span lang="EN-US">It is an ugly fact of networking life that
+packets are
+lost. STCP detects this when no acknowledgment is received within a
+timeout
+period. The rules for timeouts are: </span></p>
+<ul type="disc">
+  <li class="MsoNormal" style=""> <span lang="EN-US">Whenever a SYN,
+data, or FIN segment (i.e. an STCP packet containing anything more than
+just an acknowledgment) is transmitted, a timeout is scheduled some
+milliseconds from the time of transmission. You may implement the
+timeout as you desire--e.g. a fixed timeout, the <span class="SpellE">Karn</span>-Partridge
+
+algorithm, etc. Whatever works for <span class="GramE">you.</span>
+Note that a fixed RTT may not be sufficient--we strongly suggest that
+you implement RTT estimation in some form. (This is only a few lines of
+code). </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">If the data in a
+segment is acknowledged before the corresponding timer expires, the
+timer is canceled and the segment can be safely discarded. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">If the timeout
+for a segment is reached, the segment is examined. If it has been sent
+a total of 6 times (once from the original send plus 5
+retransmissions), then the network is assumed to have failed and the
+network terminated. Otherwise the segment is retransmitted and the
+timeout is reset again. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">STCP, like TCP,
+is a Go-back-N protocol. This means that if the transport layer decides
+that its peer has not received the segment with sequence number n, then
+it will retransmit all data starting at n, not just that segment. </span>
+  </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">Your receiver
+must buffer any data it receives, even if it arrives out of order.
+(This isn't strictly required by TCP, but almost any "real" TCP
+implementation would perform this optimization, and you must too). </span></li>
+</ul>
+<h3><a name="Network_Initiation"></a><span lang="EN-US">Network
+Initiation </span></h3>
+<p><span lang="EN-US">Normal network initiation is always initiated by
+the active
+end. Network initiation uses a three-way SYN handshake exactly like
+TCP, and is
+used to exchange information about the initial sequence numbers. The
+order of
+operations for initiation is as follows: </span></p>
+<ul type="disc">
+  <li class="MsoNormal" style=""> <span lang="EN-US">The requesting
+active end sends a SYN packet to the other end with the appropriate <span
+ class="SpellE">seq</span> number (<span class="SpellE">seqx</span>) in
+the header. The active end then sits waiting for a SYN_ACK. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">The passive end
+sends a SYN_ACK with its own sequence number (<span class="SpellE">seqy</span>)
+and <span class="SpellE">acks</span> with the number (seqx+1). The
+passive end waits for an ACK. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">The active end
+records <span class="SpellE">seqy</span> so that it will expect the
+next byte from the passive end to start at (seqy+1). It <span
+ class="SpellE">ACKs</span> the passive end's SYN request, and changes
+its state to the established state. </span></li>
+</ul>
+<p><span lang="EN-US">For more details, be sure to read <a
+ href="http://www.ietf.org/rfc/rfc793.txt"
+ title="http://www.ietf.org/rfc/rfc793.txt">RFC 793</a>. </span></p>
+<h3><a name="Network_Termination"></a><span lang="EN-US">Network
+Termination </span></h3>
+<p><span lang="EN-US">As in TCP, network termination is a four-way
+handshake
+between the two peers in a connection. The order of closing is
+independent of
+the network initialization order. Each side indicates to the other when
+it has
+finished sending data. This is done as follows: </span></p>
+<ul type="disc">
+  <li class="MsoNormal" style=""> <span lang="EN-US">When one of the
+peers has finished sending data, it transmits a FIN segment to the
+other side. At this point, no more data will be sent from that peer
+(other than possibly retransmissions, including the FIN). The FIN flag
+may be set in the last data segment transmitted by the peer. (You are
+not responsible for generating such packets, but your receiver must be
+capable of handling them). The usual rules for retransmission and
+sequence numbers apply for the FIN segment. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">The peer waits
+for an ACK of its FIN segment, as usual. If both sides have sent <span
+ class="SpellE">FINs</span> and received acknowledgements for them, the
+connection is closed once the FIN is acknowledged. Otherwise, the peer
+continues receiving data until the other side also initiates a
+connection close request. If no ACK for the FIN is ever received, as
+per the rules for retransmission, it terminates its end of the
+connection anyway. </span></li>
+</ul>
+<p><span lang="EN-US"><a href="http://www.ietf.org/rfc/rfc793.txt"
+ title="http://www.ietf.org/rfc/rfc793.txt">RFC 793</a> includes more
+details on
+connection termination; see in particular the state diagram. Note that
+you are
+not required to support TIME_WAIT. </span></p>
+<h3><a name="Glossary"></a><span lang="EN-US">Glossary </span></h3>
+<p class="MsoNormal"><span lang="EN-US">ACK packet</span></p>
+<p class="MsoNormal" style="margin-left: 36pt;"><span lang="EN-US">An
+acknowledgment packet; any segment with the ACK bit set in the flags
+field of
+the packet header. </span></p>
+<p class="MsoNormal"><span lang="EN-US">Connection</span></p>
+<p class="MsoNormal" style="margin-left: 36pt;"><span lang="EN-US">The
+entire data
+path between two hosts, in both directions, from the time STCP obtains
+the data
+to the time it is delivered to the peer. </span></p>
+<p class="MsoNormal"><span lang="EN-US">Data packet</span></p>
+<p class="MsoNormal" style="margin-left: 36pt;"><span lang="EN-US">Any
+segment
+which has a payload; i.e. the <span class="SpellE">th_off</span> field
+of the
+packet header corresponds to an offset less than the segment's total
+length. </span></p>
+<p class="MsoNormal"><span lang="EN-US">FIN packet</span></p>
+<p class="MsoNormal" style="margin-left: 36pt;"><span lang="EN-US">A
+packet which
+is participating in the closing of the connection; any segment with the
+FIN bit
+set in the flags field of the packet header. </span></p>
+<p class="MsoNormal"><span lang="EN-US">Payload</span></p>
+<p class="MsoNormal" style="margin-left: 36pt;"><span class="GramE"><span
+ lang="EN-US">The optional part of the segment which follows the packet
+header and
+contains application data.</span> </span><span lang="EN-US"> Payload
+data is
+limited to a maximum size of 500 bytes in STCP. </span></p>
+<p class="MsoNormal"><span lang="EN-US">Segment</span></p>
+<p class="MsoNormal" style="margin-left: 36pt;"><span lang="EN-US">Any
+packet sent
+by STCP. A segment consists of a required packet header and an optional
+payload. </span></p>
+<p class="MsoNormal"><span lang="EN-US">Sequence Number</span></p>
+<p class="MsoNormal" style="margin-left: 36pt;"><span class="GramE"><span
+ lang="EN-US">The uniquely identifying index of a byte within a stream.</span>
+</span><span lang="EN-US"></span></p>
+<p class="MsoNormal"><span lang="EN-US">Network</span></p>
+<p class="MsoNormal" style="margin-left: 36pt;"><span class="GramE"><span
+ lang="EN-US">The data path between two hosts provided by the network
+layer.</span> </span><span lang="EN-US"></span></p>
+<p class="MsoNormal"><span lang="EN-US">Stream</span></p>
+<p class="MsoNormal" style="margin-left: 36pt;"><span lang="EN-US">An
+ordered
+sequence of bytes with no other structure imposed. In an STCP
+connection, two streams
+are maintained: one in each direction. </span></p>
+<p class="MsoNormal"><span lang="EN-US">Window</span></p>
+<p class="MsoNormal" style="margin-left: 36pt;"><span lang="EN-US">Of a
+receiver's
+incoming stream, the set of sequence numbers for which the receiver is
+prepared
+to receive data. <span class="GramE">Defined by a starting sequence
+number and a
+length.</span> In STCP, the length is fixed at 3072. </span></p>
+<h2><a name="Transport_Layer_2"></a><span lang="EN-US">Transport Layer </span></h2>
+<p><span lang="EN-US">The interface to the transport layer is given in <span
+ class="SpellE">transport.h</span>. The interface consists of only one
+function: </span></p>
+<p class="MsoNormal"><span class="GramE"><code><span lang="EN-US">extern</span></code></span><code><span
+ lang="EN-US"> void <span class="SpellE">transport_init</span>(<span
+ class="SpellE">mysocket_t</span>
+<span class="SpellE">sd</span>, <span class="SpellE">bool_t</span> <span
+ class="SpellE">is_active</span>);</span></code></p>
+<p class="MsoNormal" style="margin-left: 36pt;"><span lang="EN-US">This
+initializes
+the transport layer, which runs in its own thread, one thread per
+connection.
+This function should not return until the connection ends. <span
+ class="SpellE"><span class="GramE">sd</span> </span> is the '<span
+ class="SpellE">mysocket</span>
+descriptor' associated with this end of the connection; <span
+ class="SpellE">is_active</span>
+is TRUE if you should initiate the connection. </span></p>
+<h2><a name="Network_Layer_2"></a><span lang="EN-US">Network Layer </span></h2>
+<p><span lang="EN-US">The network layer provides an interface for the
+connectionless and unreliable datagram service delivery mechanism. Your
+transport layer will build reliability on top of this layer using the
+functions
+implemented in the network layer. The interfaces are defined in <span
+ class="SpellE">stcp_api.h</span>. You are not required, but are highly
+recommended, to study the implementation of the functions in the
+network layer.
+</span></p>
+<p><span lang="EN-US">Please note that you may only use the interfaces
+declared
+in <span class="SpellE">stcp_api.h</span> in your own code. You must
+not call any
+other (internal) functions used in the <span class="SpellE">mysock</span>
+implementation.</span></p>
+<h2><a name="Assignment_FAQ"></a><a name="Descriptions_of_Milestones"></a><span
+ lang="EN-US">Summary </span></h2>
+<p><span lang="EN-US">To sum things up in short, all you need to
+program in this assignment is the "transport.c", in which the functions
+are of the following use:</span><span lang="EN-US"></span></p>
+<p class="MsoNormal"><code><span lang="EN-US">void <span class="SpellE">transport_init</span>(<span
+ class="SpellE">mysocket_t</span> <span class="SpellE">sd</span>, <span
+ class="SpellE">bool_t</span> <span class="SpellE">is_active</span>);</span></code></p>
+<p class="MsoNormal" style="margin-left: 36pt;"><span lang="EN-US">You
+need to do three-way handshaking inside the function body.&nbsp;</span>&nbsp;</p>
+<p class="MsoNormal"><code><span lang="EN-US">static void
+generate_initial_seq_num(context_t *ctx);</span></code></p>
+<p class="MsoNormal" style="margin-left: 36pt;"><span lang="EN-US">You'll
+generate the initial sequence number in this function. </span></p>
+<span lang="EN-US">
+<p class="MsoNormal"><code><span lang="EN-US">static void
+control_loop(mysocket_t sd, context_t *ctx);</span></code></p>
+<p class="MsoNormal" style="margin-left: 36pt;"><span lang="EN-US">This
+is the biggest&nbsp;task in this assignment. You need to implement all
+the STCP control flows inside this function. You could write as many as
+functions as you wish, but all&nbsp;those functions should be called
+from this function only. &nbsp;</span></p>
+</span>
+<h2><a name="Testing_Your_Code"></a><span lang="EN-US"> Grading </span></h2>
+<p><span lang="EN-US">The provided file transfer server and client
+should be used to test your code in both reliable and unreliable mode.
+You may modify the code for the client and server however you wish for
+testing purposes. We will be grading your submission using our own
+clients and servers, which will be similar to the provided
+client/server pair. We will tweak the network layer's behavior in order
+to test the robustness
+of your STCP implementation. Also since STCP is a protocol, you should
+expect your
+implementation to be able to work together with other's implementation.
+Therefore you
+will also be tested against&nbsp;the TA's&nbsp;implementation. </span></p>
+<p><span lang="EN-US">There are some points you should be aware when
+implementing the protocol (and will be tested when grading):</span></p>
+<p></p>
+<ul type="disc">
+  <li class="MsoNormal" style="">Payload for the biggest packets never
+exceeds<span lang="EN-US"> 500 bytes. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">Receiver always
+ACKs the last in order byte.&nbsp;Receiver does not ACK bytes outside
+of the receive window. Moreover, packets straddling end of receive
+window will correctly be split.&nbsp; You need to worry about that
+because in different implementation, sender's window size might be
+different from receiver's windows size. Therefore you might get a
+packet at the end of your receiver's window that straddle it (part of
+the packet fall out of the receiver's window and should NOT be ACKed,
+while the part inside the window should be ACKed).</span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">Receiver will
+buffer out-of-order data in receiver window. Duplicate packets are
+ACKed correctly. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">SYN consumes 1
+sequence number while ACKs do not consume sequence number.</span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">Sliding window
+size is negotiated correctly.&nbsp;(You have to be able to handle
+advertised sender's window).</span></li>
+</ul>
+<br>
+More details about the grading criteria can be found <a
+ href="stcp-grading.html">here</a>.
+<h2><a name="Miscellaneous_Notes_and_Hints"></a><span lang="EN-US">Miscellaneous
+Notes
+and Hints </span></h2>
+<ol start="1" type="1">
+  <span lang="EN-US">
+  <li class="MsoNormal" style=""> <span lang="EN-US">To use MYSOCK in
+your own application, simply substitude &lt;socket.h&gt; with
+"mysock.h". Most of the function call are the same as in the standard
+socket libarary just&nbsp;with an extra prefix my-, expect that you
+should use myread()&nbsp;to replace&nbsp;recv() and mywrite()&nbsp;to
+replace&nbsp;send(). </span>The calls <span class="SpellE"> <span
+ class="GramE">myconnect</span> </span><span class="GramE">(</span>)
+and <span class="SpellE">myaccept</span>() block till a connection is
+established (or until an error is detected during the connection
+request). To cause them to unblock and return to the calling code, use
+the <span class="SpellE">stcp_unblock_<span class="GramE">application</span></span><span
+ class="GramE">(</span>) interface found in <span class="SpellE">stcp_api.h</span>.
+  </li>
+  </span>
+  <li class="MsoNormal" style=""> <span class="SpellE"> <span
+ class="GramE"> <span lang="EN-US">mybind</span> </span> </span><span
+ class="GramE"><span lang="EN-US">(</span> </span><span lang="EN-US">)
+followed by <span class="SpellE">mygetsockname</span>() does not give
+the local IP address; <span class="SpellE">mygetsockname</span>()
+(like the real <span class="SpellE">getsockname</span>()) does not
+return the local address until a remote system connects to that <span
+ class="SpellE">mysocket</span>. </span> </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">Correct <span
+ class="SpellE">endianness</span> will be tested. Don't neglect to
+include your <span class="SpellE"> <span class="GramE">ntohs</span> </span><span
+ class="GramE">(</span>) and <span class="SpellE">htons</span>(), etc.
+calls where appropriate. If you forget them, your code may seem to work
+correctly while talking to other hosts of similar <span class="SpellE">endianness</span>,
+
+but break when talking to systems running on a different OS. </span></li>
+</ol>
+<h2><a name="Deliverables"></a><span lang="EN-US">Deliverables </span></h2>
+<p><span lang="EN-US">The deliverables for this assignment are: </span></p>
+<ol start="1" type="1">
+  <li class="MsoNormal" style=""> <span lang="EN-US">Your modified <span
+ class="SpellE">transport.c</span> (You are NOT allowed to modify or
+submit any other .c or .h files not found in the stub code download). </span>
+  </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US">README describing
+the design of your transport layer, and any design <span class="SpellE">decicsions</span>/tradeoffs
+that you had to consider. One page is enough for the <span
+ class="SpellE">writeup</span>. </span></li>
+</ol>
+
+<h2><a name="Links"></a><span lang="EN-US">Links </span></h2>
+<ul type="disc">
+  <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="http://www.faqs.org/rfcs/rfc793.html"
+ title="http://www.faqs.org/rfcs/rfc793.html"> RFC 793 - TCP</a> </span>
+  </li>
+  <li class="MsoNormal" style=""> <span lang="EN-US"> <a
+ href="http://www.faqs.org/rfcs/rfc1122.html"
+ title="http://www.faqs.org/rfcs/rfc1122.html"> RFC 1122 - Requirements
+for Internet Hosts (Communication Layers)</a> </span></li>
+</ul>
+</body>
+</html>
+
