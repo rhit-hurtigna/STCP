@@ -30,10 +30,11 @@ uint16_t _mysock_tcp_checksum(uint32_t src_addr /*network byte order*/,
 
     unsigned int k;
     int32_t sum = 0;
+
     assert(packet && len >= sizeof(struct tcphdr));
     assert(sizeof(pseudo_header) == 12);
 
-    printf("src2: %u, dst: %u, len: %u\n", ntohl(src_addr), ntohl(dst_addr), len);
+
     assert(src_addr > 0);
     assert(dst_addr > 0);
 
@@ -74,12 +75,12 @@ void _mysock_set_checksum(const mysock_context_t *ctx,
 
     assert(ctx->network_state.peer_addr.sa_family == AF_INET);
 
-    ((struct tcphdr *) packet)->th_sum = htons(_mysock_tcp_checksum(
+    ((struct tcphdr *) packet)->th_sum = _mysock_tcp_checksum(
         _network_get_local_addr((network_context_t *)
                                 &ctx->network_state), /*src*/
         ((struct sockaddr_in *) &ctx->network_state.peer_addr)-> /*dst*/
             sin_addr.s_addr,
-        packet, len));
+        packet, len);
 }
 
 /* returns TRUE if checksum is correct, FALSE otherwise */
@@ -100,10 +101,6 @@ bool_t _mysock_verify_checksum(const mysock_context_t *ctx,
                                 &ctx->network_state), /*dst*/
         packet, len);
 
-    struct tcphdr* header = ((struct tcphdr *) packet);
-    printf("%d %d %u %u %u %u %u\n", ntohs(header->th_sport), ntohs(header->th_dport), ntohl(header->th_seq), ntohl(header->th_ack), header->th_flags, ntohs(header->th_win), ntohs(header->th_sum));
-    printf("my_sum: %u\n", my_sum);
-    printf("packet sum, network order: %u\n", ntohs(header->th_sum));
     return my_sum == ((struct tcphdr *) packet)->th_sum;
 }
 
