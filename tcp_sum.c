@@ -33,8 +33,7 @@ uint16_t _mysock_tcp_checksum(uint32_t src_addr /*network byte order*/,
     assert(packet && len >= sizeof(struct tcphdr));
     assert(sizeof(pseudo_header) == 12);
 
-    printf("src: %d, dst: %d, len: %ld\n", src_addr, dst_addr, len);
-        printf("src2: %u, dst: %u, len: %lu\n", src_addr, dst_addr, len);
+    printf("src2: %u, dst: %u, len: %u\n", src_addr, dst_addr, len);
     assert(src_addr > 0);
     assert(dst_addr > 0);
 
