@@ -67,7 +67,8 @@ void transport_init(mysocket_t sd, bool_t is_active)
     
     struct timespec* timeout = (timespec*) malloc(sizeof(struct timespec));
     memset(timeout, 0, sizeof(*timeout));
-    timeout->tv_sec = 1;
+    timeout->tv_sec = 0;
+    timeout->tv_nsec = 200000000;
     ctx->timeout = timeout;
 
     /* XXX: you should send a SYN packet here if is_active, or wait for one
