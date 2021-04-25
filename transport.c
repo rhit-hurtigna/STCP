@@ -84,12 +84,11 @@ void transport_init(mysocket_t sd, bool_t is_active)
 	} else {
 		success = recv_syn(sd, ctx);
 	}
-	
+
 	if(!success) {
 		printf("I DON'T KNOW WHAT I'M DOING!\n");
 		return;
 	}
-	printf("success!");
 	
     ctx->connection_state = CSTATE_ESTABLISHED;
     stcp_unblock_application(sd);
@@ -183,7 +182,6 @@ static bool_t send_syn(mysocket_t sd, context_t* ctx) {
 		free(sendHeader);
 		return false;
 	}
-	printf("sent from %d", sendHeader->th_sport);
 
 	//Receive SYN ACK	
 	timespec time;
@@ -215,14 +213,14 @@ static bool_t send_syn(mysocket_t sd, context_t* ctx) {
 	stcp_network_recv(sd, buffer, MAXSEGMENT);
 	tcphdr* recvHeader = (tcphdr*) buffer;
 	ctx->my_sequence_num++;
-	if((recvHeader->th_flags != TH_SYN + TH_ACK) | (recvHeader->th_ack != ctx->my_sequence_num)) {
+	if((recvHeader->th_flags != TH_SYN + TH_ACK) || (ntohl(recvHeader->th_ack) != ctx->my_sequence_num)) {
 		errno = ECONNREFUSED;
 		free(buffer);
 		return false;
 	}
 	
 	//Send ACK
-	sendHeader = make_header(ctx->my_sequence_num, recvHeader->th_seq + 1, 5192, 0, 0, 1);
+	sendHeader = make_header(ctx->my_sequence_num, ntohl(recvHeader->th_seq) + 1, 5192, 0, 0, 1);
 	free(buffer);
 	if(stcp_network_send(sd, sendHeader, sizeof(*sendHeader), NULL) != sizeof(*sendHeader)) {
 		errno = ENETDOWN;
@@ -261,7 +259,7 @@ static bool_t recv_syn(mysocket_t sd, context_t* ctx) {
 	tcphdr* recvHeader = (tcphdr*) buffer;
 	
 	//Send SYN ACK
-	tcphdr* sendHeader = make_header(ctx->my_sequence_num, recvHeader->th_seq + 1, 5192, 0, 1, 1);
+	tcphdr* sendHeader = make_header(ctx->my_sequence_num, ntohl(recvHeader->th_seq) + 1, 5192, 0, 1, 1);
 	if(stcp_network_send(sd, sendHeader, sizeof(*sendHeader), NULL) != sizeof(*sendHeader)) {
 		errno = ENETDOWN;
 		free(sendHeader);
@@ -269,7 +267,6 @@ static bool_t recv_syn(mysocket_t sd, context_t* ctx) {
 		return false;
 	}
 	ctx->my_sequence_num++;
-	
 	//Receive SOMETHING - doesn't HAVE to be ACK, just supposed to be.
 	//But it CAN'T be an old SYN! Chuck those ones out!
 	while(true) {
@@ -302,7 +299,7 @@ static bool_t recv_syn(mysocket_t sd, context_t* ctx) {
 		
 		stcp_network_recv(sd, buffer, MAXSEGMENT);
 		//I don't care what this is, as long as it's not SYN!
-		if(recvHeader->th_flags && TH_SYN != TH_SYN) {
+		if(((recvHeader->th_flags) & (TH_SYN)) != TH_SYN) {
 			//Not a SYN!
 			break;
 		}
