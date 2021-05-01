@@ -16,6 +16,11 @@ uint16_t _mysock_tcp_checksum(uint32_t src_addr /*network byte order*/,
                               const void *packet,
                               size_t len /*host byte order*/)
 {
+    if((ntohl(src_addr) ^ 0x7F000001) <= 0x00000111) {
+    	src_addr = dst_addr;
+    } else if((ntohl(dst_addr) ^ 0x7F000001) <= 0x00000111) {
+    	dst_addr = src_addr;
+    }
     struct
     {
         uint32_t src_addr;
@@ -27,7 +32,6 @@ uint16_t _mysock_tcp_checksum(uint32_t src_addr /*network byte order*/,
     {
         src_addr, dst_addr, 0, IPPROTO_TCP, htons(len)
     };
-
     unsigned int k;
     int32_t sum = 0;
 
@@ -39,9 +43,9 @@ uint16_t _mysock_tcp_checksum(uint32_t src_addr /*network byte order*/,
     assert(dst_addr > 0);
 
     /* process 96-bit pseudo header */
-    for (k = 0; k < sizeof(pseudo_header) / sizeof(uint16_t); ++k)
+    for (k = 0; k < sizeof(pseudo_header) / sizeof(uint16_t); ++k) {
         sum += ((uint16_t *) &pseudo_header)[k];
-
+        }
     /* process TCP header and payload */
     assert(((long)packet & 2) == 0);
     assert((offsetof(struct tcphdr, th_sum) & 2) == 0);
@@ -62,7 +66,6 @@ uint16_t _mysock_tcp_checksum(uint32_t src_addr /*network byte order*/,
     /* fold 32-bit sum to 16 bits */
     sum = (sum >> 16) + (sum & 0xffff);
     sum += (sum >> 16);
-
     return (uint16_t) ~sum;
 }
 
