@@ -78,7 +78,7 @@ void transport_init(mysocket_t sd, bool_t is_active)
      * if connection fails; to do so, just set errno appropriately (e.g. to
      * ECONNREFUSED, etc.) before calling the function.
      */
-    
+    printf("start\n");
     bool_t success;
 	if(is_active) {
 		success = send_syn(sd, ctx);
