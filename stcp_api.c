@@ -158,12 +158,11 @@ void *stcp_get_context(mysocket_t sd)
 ssize_t stcp_network_recv(mysocket_t sd, void *dst, size_t max_len)
 {
     ssize_t len = _network_recv(sd, dst, max_len);
-
     /* checksum should have been verified by underlying network layer in
      * this implementation.
      */
-    assert(len <= 0 ||
-           _mysock_verify_checksum(_mysock_get_context(sd), dst, len));
+    //assert(len <= 0 ||
+    //       _mysock_verify_checksum(_mysock_get_context(sd), dst, len));
     return len;
 }
 

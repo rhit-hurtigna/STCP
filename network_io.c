@@ -29,16 +29,15 @@
 uint32_t _network_get_local_addr(network_context_t *ctx)
 {
 
-
-    struct ifaddrs *ifaddr, *ifa;
+    struct ifaddrs *ifaddr;
+    struct ifaddrs *ifa;
     uint32_t addr = 0;
-
+    getifaddrs(&ifaddr);
     if (getifaddrs(&ifaddr) == -1)
     {
         perror("getifaddrs");
         exit(EXIT_FAILURE);
     }
-
 
     for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next)
     {  
@@ -48,7 +47,7 @@ uint32_t _network_get_local_addr(network_context_t *ctx)
             continue;
         if (ifa->ifa_flags & IFF_RUNNING && !(ifa->ifa_flags & IFF_LOOPBACK)) {
         	if(addr != 0) {
-        		printf("\nHEY! This code is only configured to work while only 1 non-loopback interface is connected (I think you might be plugged into Ethernet or something). I'm going to try my best to return something that's correct, but no guarantees! If you'd like to shut me up or write some better code that what this is, check me out in line 51 of network_io.c.\n");
+        		printf("\nHEY! This code is only configured to work while only 1 non-loopback interface is connected (I think you might be plugged into Ethernet or something). I'm going to try my best to return something that's correct, but no guarantees! If you'd like to shut me up or if you'd like to write some better code that what this is, check me out in line 51 of network_io.c.\n");
         	}
         	addr = ((struct sockaddr_in *) ifa->ifa_addr)->sin_addr.s_addr;
         }

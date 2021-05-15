@@ -90,7 +90,6 @@ int _network_recv(mysocket_t sd, void *dst, size_t max_len)
     assert(ctx && dst);
     len = _mysock_dequeue_buffer(ctx, &ctx->network_recv_queue,
                                  dst, max_len, FALSE);
-
     return len;
 }
 

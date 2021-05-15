@@ -96,14 +96,12 @@ bool_t _mysock_verify_checksum(const mysock_context_t *ctx,
     assert(len >= sizeof(struct tcphdr));
 
     assert(ctx->network_state.peer_addr.sa_family == AF_INET);
-
     my_sum = _mysock_tcp_checksum(
         ((struct sockaddr_in *) &ctx->network_state.peer_addr)-> /*src*/
             sin_addr.s_addr,
         _network_get_local_addr((network_context_t *)
                                 &ctx->network_state), /*dst*/
         packet, len);
-
     return my_sum == ((struct tcphdr *) packet)->th_sum;
 }
 

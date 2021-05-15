@@ -168,7 +168,10 @@ loop_until_end(int sd)
         *++pline = '\r';
         *++pline = '\n';
         *++pline = '\0';
-
+	if(strncmp(line, "quit", 4) == 0) {
+		printf("Closing connection!\n");
+		break;
+	}
         if (mywrite(sd, line, pline - line) < 0)
         {
             perror("mywrite");
