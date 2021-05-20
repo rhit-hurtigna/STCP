@@ -30,7 +30,7 @@
 
 
 /* Every received file is stored with this filename */
-#define RCVD_FILENAME "rcvd"
+#define RCVD_FILENAME "rcvd.pptx"
 
 #ifndef MIN
 #define MIN(a,b) ((a) < (b) ? (a) : (b))
