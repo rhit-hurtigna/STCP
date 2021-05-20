@@ -25,11 +25,11 @@
 #define MAXSEGMENT 560 // 60 for maximum options in header (I'm supposed to support but ignore them), and 500 for max payload
 #define MAXPAYLOAD 500
 #define STCPHEADER 20
-#define WINDOW 15488
+#define WINDOW 5192
 #define MAXFAILS 5
 #define RTTADJUST 1.3 // Factor of avg RTT to be considered a timeout
 #define RTTDELTA 0.1
-#define MIN_RTO 0
+#define MIN_RTO 5000000
 #define MAX_ACKS 2
 
 enum state { CSTATE_ESTABLISHED, CSTATE_HALF_CLOSED, CSTATE_WAIT_ON_PASSIVE };    /* obviously you should have more states */
@@ -739,10 +739,8 @@ static int resend_packets(int sd, context_t *ctx) {
 	printf("PlusOne fails: %d\n", ctx->fails);
 	if(ctx->fails > MAXFAILS) {
 		printf("FAILFAILXXX\n");
-		//return -1;
+		return -1;
 	}
-	resend_packet(sd, ctx);
-	return 0;
 	// Resend ALL packets
 	sent_info *sent;
 	sent_info **cursor = ctx->sent_array;
