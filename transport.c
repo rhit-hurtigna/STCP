@@ -20,15 +20,16 @@
 #include "transport.h"
 #include <arpa/inet.h>
 #include <time.h>
+#include <math.h>
 
 #define MAXSEGMENT 560 // 60 for maximum options in header (I'm supposed to support but ignore them), and 500 for max payload
 #define MAXPAYLOAD 500
 #define STCPHEADER 20
-#define WINDOW 5192
+#define WINDOW 15488
 #define MAXFAILS 5
 #define RTTADJUST 1.3 // Factor of avg RTT to be considered a timeout
 #define RTTDELTA 0.1
-#define MIN_RTO 5000000
+#define MIN_RTO 0
 #define MAX_ACKS 2
 
 enum state { CSTATE_ESTABLISHED, CSTATE_HALF_CLOSED, CSTATE_WAIT_ON_PASSIVE };    /* obviously you should have more states */
@@ -66,6 +67,8 @@ typedef struct
 	timespec *resend; // Timer for when to resend oldest packet
 	int fails; // How many times oldest packet failed
 	int acks; // How many times I've received a useless ack of the oldest packet
+	size_t sent;
+	size_t recv;
 } context_t;
 
 
@@ -116,6 +119,8 @@ void transport_init(mysocket_t sd, bool_t is_active)
     memset(ctx->sent_array, 0, sizeof(sent_info*) * 128);
     ctx->recv_array = (recv_info**) malloc(sizeof(recv_info*) * 128);
     memset(ctx->recv_array, 0, sizeof(recv_info*) * 128);
+    ctx->sent = 0;
+    ctx->recv = 0;
 
     bool_t success;
 	if(is_active) {
@@ -221,6 +226,8 @@ static void app_to_network(mysocket_t sd, context_t* ctx) {
 	size_t read = stcp_app_recv(sd, buf, MAXPAYLOAD);
 	
 	tcphdr* send_header = header(ctx->my_sequence_num, ctx->my_last_ack, WINDOW);
+	ctx->sent++;
+	printf("I have now sent %ld data packets!\n", ctx->sent);
 	stcp_network_send(sd, send_header, STCPHEADER, buf, read, NULL);
 	
 	ctx->my_sequence_num += read;
@@ -236,7 +243,9 @@ static void app_to_network(mysocket_t sd, context_t* ctx) {
 }
 
 static void send_ack(mysocket_t sd, int win, context_t *ctx) {
-	printf("sending an ack of %d\n", ctx->my_last_ack);
+	timespec current;
+	timespec_get(&current, TIME_UTC);
+	printf("sending an ack of %d at %ld secs and %ld nanos\n", ctx->my_last_ack, current.tv_sec, current.tv_nsec);
 	//Send ACK
 	tcphdr *sendHeader = ack(ctx->my_sequence_num, ctx->my_last_ack, win);
 	if(stcp_network_send(sd, sendHeader, sizeof(*sendHeader), NULL) != sizeof(*sendHeader)) {
@@ -252,6 +261,8 @@ static void network_to_app(mysocket_t sd, char *buf, tcphdr *recv_header, int re
 		//Just a header! I don't care.
 		return;
 	}
+	ctx->recv++;
+	printf("I have now received %ld data packets!\n", ctx->recv);
 	if(ntohl(recv_header->th_seq) > ctx->my_last_ack) {
 		printf("Out of order! SCREAM LOUDLY!\n");
 		printf("expected: %d, got: %d\n", ctx->my_last_ack, ntohl(recv_header->th_seq));
@@ -294,11 +305,19 @@ static void receive_ack(int sd, tcphdr *recv_header, context_t *ctx) {
 			ctx->acks = 0;
 		}
 	} else {
-		if(*(ctx->sent_array) && (ntohl(recv_header->th_ack) == (*(ctx->sent_array))->header->th_seq)) {
-			ctx->acks++;
-			if(ctx->acks >= MAX_ACKS) {
-				printf("Too many consecutive ACKS! Resending!\n");
-				resend_packet(sd, ctx);
+	    if(!!(*(ctx->sent_array))) {
+	    	printf("good ptr\n");
+	    } else {
+	    	printf("bad ptr\n");
+	    }
+		if(!!(*(ctx->sent_array))) {
+			if(ntohl(recv_header->th_ack) == ntohl((*(ctx->sent_array))->header->th_seq)) {
+				printf("count re-ack\n");
+				ctx->acks++;
+				if(ctx->acks >= MAX_ACKS) {
+					printf("Too many consecutive ACKS! Resending!\n");
+					resend_packet(sd, ctx);
+				}
 			}
 		}
 	}
@@ -512,7 +531,7 @@ static bool_t recv_syn(mysocket_t sd, context_t* ctx) {
 static void set_timeout(timespec* current, context_t* ctx, int failed) {
     printf("Current timeout: %ld sec, %ld nanos\n", ctx->timeout->tv_sec, ctx->timeout->tv_nsec);
 	timespec_get(current, TIME_UTC);
-	current->tv_nsec = (long) (current->tv_nsec + (ctx->timeout->tv_nsec + ctx->timeout->tv_sec * 1000000000) * RTTADJUST * (2 ^ failed));
+	current->tv_nsec = (long) (current->tv_nsec + (ctx->timeout->tv_nsec + ctx->timeout->tv_sec * 1000000000) * RTTADJUST * (pow(2, failed)));
 	current->tv_sec += (current->tv_nsec - (current->tv_nsec % 1000000000)) / 1000000000;
 	current->tv_nsec = (long) current->tv_nsec % 1000000000;
 	if(ctx->timeout->tv_sec < 1 && ctx->timeout->tv_nsec < MIN_RTO) {
@@ -563,7 +582,7 @@ static int delete_sent_info(tcp_seq ack_num, context_t* ctx, int isFirst) {
   	printf("not found!\n");
   	return 1;
   }
-  // If never failed, adjust timeout
+  // Adjust timeout if never failed and was first
   if(ctx->fails == 0 && isFirst == 1) {
 	adjust_timeout(ctx->started, ctx);
   }
@@ -644,7 +663,7 @@ static void add_recv_info(context_t *ctx, tcp_seq seqNum, char *data, size_t dat
 
 char* join_recv_info(context_t *ctx, char *buf, size_t init_len, size_t *full_len) {
 	printf("join_recv_info\n");
-	tcp_seq next_seq = ctx->my_last_ack;
+	tcp_seq next_seq = ctx->my_last_ack + init_len;
 	recv_info **cursor = ctx->recv_array;
 	*full_len = init_len;
 	size_t found = 0;
@@ -719,7 +738,8 @@ static int resend_packets(int sd, context_t *ctx) {
 	ctx->fails++;
 	printf("PlusOne fails: %d\n", ctx->fails);
 	if(ctx->fails > MAXFAILS) {
-		return -1;
+		printf("FAILFAILXXX\n");
+		//return -1;
 	}
 	resend_packet(sd, ctx);
 	return 0;
@@ -746,6 +766,8 @@ static void resend_packet(int sd, context_t *ctx) {
 	}
 	ctx->acks = 0;
 	printf("Resending based on 3 acks packet with num of %d and seq num of %d.\n", sent->num, ntohl(sent->header->th_seq));
+	ctx->sent++;
+	printf("I have now sent %ld data packets!\n", ctx->sent);
 	stcp_network_send(sd, sent->header, STCPHEADER, sent->data, sent->data_len, NULL);
 	printf("Before set time: %ld sec, %ld nsec\n", ctx->resend->tv_sec, ctx->resend->tv_nsec);
 	set_timeout(ctx->resend, ctx, ctx->fails);
