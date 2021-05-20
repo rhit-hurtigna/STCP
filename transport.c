@@ -130,7 +130,7 @@ void transport_init(mysocket_t sd, bool_t is_active)
 	}
 
 	if(!success) {
-		printf("Handshake failed!\n");
+		//printf("Handshake failed!\n");
 		return;
 	}
     ctx->connection_state = CSTATE_ESTABLISHED;
@@ -172,52 +172,52 @@ static void control_loop(mysocket_t sd, context_t *ctx)
     while (!ctx->done)
     {
         unsigned int event;
-        printf("waiting...\n");
+        //printf("waiting...\n");
 
         /* see stcp_api.h or stcp_api.c for details of this function */
         /* DONE: you will need to change some of these arguments! */
 		if(*(ctx->recv_array)) {
-			printf("recv nonempty\n");
+			//printf("recv nonempty\n");
 		} else {
-			printf("recv empty\n");
+			//printf("recv empty\n");
 		}
         event = stcp_wait_for_event(sd, can_send(ctx), next_resend(ctx));
-		printf("event!\n");fflush(stdout);
+		//printf("event!\n");fflush(stdout);
         /* check whether it was the network, app, or a close request */
         if (event & NETWORK_DATA) {
-        	printf("My peer sent me something!\n");
+        	//printf("My peer sent me something!\n");
         	if(receive_on_network(sd, ctx) == 1) {
         		//Passive side sent their FIN
         		return;
         	}
         }
         else if (event & APP_DATA) {
-        	printf("My user wants to send something!\n");
+        	//printf("My user wants to send something!\n");
         	app_to_network(sd, ctx);
         }
         else if (event & APP_CLOSE_REQUESTED) {
         	send_first_fin(sd, ctx);
 		}
 		else if (!event) {
-			printf("Timed out!\n");
+			//printf("Timed out!\n");
 			if(!*(ctx->sent_array)) {
 				//Timed out while there was nothing sent... Means that
 				//I'm the server and I'm done sending and the client's
 				//done sending too!
-				printf("Shutting down connection!\n");
+				//printf("Shutting down connection!\n");
 				send_second_fin(sd, ctx);
-				printf("returning\n");
+				//printf("returning\n");
 				return;
 			}
 			if(resend_packets(sd, ctx) < 0) {
-				printf("Too many failed attempts! Exiting\n");
+				//printf("Too many failed attempts! Exiting\n");
 				return;
 			}
 		}
 		else {
-			printf("I can't recognize this status code: %u!\n", event);
+			//printf("I can't recognize this status code: %u!\n", event);
 		}
-        printf("done!\n");
+        //printf("done!\n");
     }
 }
 
@@ -227,7 +227,7 @@ static void app_to_network(mysocket_t sd, context_t* ctx) {
 	
 	tcphdr* send_header = header(ctx->my_sequence_num, ctx->my_last_ack, WINDOW);
 	ctx->sent++;
-	printf("I have now sent %ld data packets!\n", ctx->sent);
+	//printf("I have now sent %ld data packets!\n", ctx->sent);
 	stcp_network_send(sd, send_header, STCPHEADER, buf, read, NULL);
 	
 	ctx->my_sequence_num += read;
@@ -245,7 +245,7 @@ static void app_to_network(mysocket_t sd, context_t* ctx) {
 static void send_ack(mysocket_t sd, int win, context_t *ctx) {
 	timespec current;
 	timespec_get(&current, TIME_UTC);
-	printf("sending an ack of %d at %ld secs and %ld nanos\n", ctx->my_last_ack, current.tv_sec, current.tv_nsec);
+	//printf("sending an ack of %d at %ld secs and %ld nanos\n", ctx->my_last_ack, current.tv_sec, current.tv_nsec);
 	//Send ACK
 	tcphdr *sendHeader = ack(ctx->my_sequence_num, ctx->my_last_ack, win);
 	if(stcp_network_send(sd, sendHeader, sizeof(*sendHeader), NULL) != sizeof(*sendHeader)) {
@@ -255,31 +255,31 @@ static void send_ack(mysocket_t sd, int win, context_t *ctx) {
 }
 
 static void network_to_app(mysocket_t sd, char *buf, tcphdr *recv_header, int received, context_t *ctx) {
-	printf("networkToApp\n");
+	//printf("networkToApp\n");
 	int header_size = recv_header->th_off * 4;
 	if(header_size == received) {
 		//Just a header! I don't care.
 		return;
 	}
 	ctx->recv++;
-	printf("I have now received %ld data packets!\n", ctx->recv);
+	//printf("I have now received %ld data packets!\n", ctx->recv);
 	if(ntohl(recv_header->th_seq) > ctx->my_last_ack) {
-		printf("Out of order! SCREAM LOUDLY!\n");
-		printf("expected: %d, got: %d\n", ctx->my_last_ack, ntohl(recv_header->th_seq));
+		//printf("Out of order! SCREAM LOUDLY!\n");
+		//printf("expected: %d, got: %d\n", ctx->my_last_ack, ntohl(recv_header->th_seq));
 		// Add to buffer
-		printf("Adding num %d to array.\n", ntohl(recv_header->th_seq));
+		//printf("Adding num %d to array.\n", ntohl(recv_header->th_seq));
 		add_recv_info(ctx, ntohl(recv_header->th_seq), buf + header_size, received - header_size);
 		// Resend my ack
 		send_ack(sd, WINDOW, ctx);
 	} else if(ntohl(recv_header->th_seq) < ctx->my_last_ack) {
-		printf("My ack didn't go through, other side double sent! I was expecting %d, but I got %d.\n", ctx->my_last_ack, ntohl(recv_header->th_seq));
+		//printf("My ack didn't go through, other side double sent! I was expecting %d, but I got %d.\n", ctx->my_last_ack, ntohl(recv_header->th_seq));
 		send_ack(sd, WINDOW, ctx);
 	} else {
 		//Right packet...
 		size_t data_len;
 		char *data = join_recv_info(ctx, buf + header_size, received - header_size, &data_len);
 		ctx->my_last_ack += data_len;
-		printf("Set my last ack to %d\n", ctx->my_last_ack);
+		//printf("Set my last ack to %d\n", ctx->my_last_ack);
 		stcp_app_send(sd, data, data_len);
 		free(data);
 		send_ack(sd, WINDOW, ctx);
@@ -287,7 +287,7 @@ static void network_to_app(mysocket_t sd, char *buf, tcphdr *recv_header, int re
 }
 
 static void receive_ack(int sd, tcphdr *recv_header, context_t *ctx) {
-	printf("received ack of %d\n", ntohl(recv_header->th_ack));
+	//printf("received ack of %d\n", ntohl(recv_header->th_ack));
 	if(delete_sent_info(ntohl(recv_header->th_ack), ctx, 1) == 0) {
 		// The ack deleted at least one old packet!
 		while(delete_sent_info(ntohl(recv_header->th_ack), ctx, 0) == 0);
@@ -306,16 +306,16 @@ static void receive_ack(int sd, tcphdr *recv_header, context_t *ctx) {
 		}
 	} else {
 	    if(!!(*(ctx->sent_array))) {
-	    	printf("good ptr\n");
+	    	//printf("good ptr\n");
 	    } else {
-	    	printf("bad ptr\n");
+	    	//printf("bad ptr\n");
 	    }
 		if(!!(*(ctx->sent_array))) {
 			if(ntohl(recv_header->th_ack) == ntohl((*(ctx->sent_array))->header->th_seq)) {
-				printf("count re-ack\n");
+				//printf("count re-ack\n");
 				ctx->acks++;
 				if(ctx->acks >= MAX_ACKS) {
-					printf("Too many consecutive ACKS! Resending!\n");
+					//printf("Too many consecutive ACKS! Resending!\n");
 					resend_packet(sd, ctx);
 				}
 			}
@@ -325,27 +325,27 @@ static void receive_ack(int sd, tcphdr *recv_header, context_t *ctx) {
 }
 
 static int receive_on_network(mysocket_t sd, context_t* ctx) {
-	printf("recvOnNetwork\n");
+	//printf("recvOnNetwork\n");
 	int wasFin = 0;
 	char *buf = (char*) malloc(MAXSEGMENT);
 	tcphdr *recv_header = (tcphdr*) buf;
 	int received = stcp_network_recv(sd, buf, MAXSEGMENT);
 	if((recv_header->th_flags & TH_FIN)) {
-		printf("Got a FIN!\n");
+		//printf("Got a FIN!\n");
 		// Send 1 ACK of the FIN
 		tcphdr *header = ack(ctx->my_sequence_num, ntohl(recv_header->th_seq) + 1, WINDOW);
 		stcp_network_send(sd, header, sizeof(*header), NULL);
 		free(header);
 		if(ctx->connection_state == CSTATE_HALF_CLOSED) {
-			printf("passive side sent their FIN! I'm done!!!\n");
+			//printf("passive side sent their FIN! I'm done!!!\n");
 			wasFin = 1;
 		} else {
-			printf("Active side sent their FIN! Time to send my last file.\n");
+			//printf("Active side sent their FIN! Time to send my last file.\n");
 			ctx->connection_state = CSTATE_WAIT_ON_PASSIVE;
 		}
 	}
 	if(recv_header->th_flags & TH_ACK) {
-		printf("twas an ACK\n");
+		//printf("twas an ACK\n");
 		receive_ack(sd, recv_header, ctx);
 	}
 	network_to_app(sd, buf, recv_header, received, ctx);
@@ -360,7 +360,7 @@ static tcphdr* header(tcp_seq seqNum, tcp_seq ackNum, uint16_t win) {
 
 
 static tcphdr* ack(tcp_seq seqNum, tcp_seq ackNum, uint16_t win) {
-	printf("gonna ack %d\n", ackNum);
+	//printf("gonna ack %d\n", ackNum);
 	return make_header(seqNum, ackNum, win, 0, 0, 1);
 }
 
@@ -529,7 +529,7 @@ static bool_t recv_syn(mysocket_t sd, context_t* ctx) {
 
 /* Sets current to be RTTADJUST times the timeout plus the current time */
 static void set_timeout(timespec* current, context_t* ctx, int failed) {
-    printf("Current timeout: %ld sec, %ld nanos\n", ctx->timeout->tv_sec, ctx->timeout->tv_nsec);
+    //printf("Current timeout: %ld sec, %ld nanos\n", ctx->timeout->tv_sec, ctx->timeout->tv_nsec);
 	timespec_get(current, TIME_UTC);
 	current->tv_nsec = (long) (current->tv_nsec + (ctx->timeout->tv_nsec + ctx->timeout->tv_sec * 1000000000) * RTTADJUST * (pow(2, failed)));
 	current->tv_sec += (current->tv_nsec - (current->tv_nsec % 1000000000)) / 1000000000;
@@ -568,18 +568,18 @@ static void add_sent_info(sent_info *info, context_t* ctx) {
 }
 
 static int delete_sent_info(tcp_seq ack_num, context_t* ctx, int isFirst) {
-  printf("Deleting for %d\n", ack_num);
+  //printf("Deleting for %d\n", ack_num);
   sent_info **cursor = ctx->sent_array;
   while(*cursor != NULL) {
   	if((*cursor)->num <= ack_num) {
-  		printf("found: %d!\n", (*cursor)->num);
+  		//printf("found: %d!\n", (*cursor)->num);
   		break;
   	}
-  	printf("Not acked yet: %d.\n", (*cursor)->num);
+  	//printf("Not acked yet: %d.\n", (*cursor)->num);
     cursor++;
   }
   if(!*cursor) {
-  	printf("not found!\n");
+  	//printf("not found!\n");
   	return 1;
   }
   // Adjust timeout if never failed and was first
@@ -600,13 +600,13 @@ static int delete_sent_info(tcp_seq ack_num, context_t* ctx, int isFirst) {
 
 
 static void add_recv_info(context_t *ctx, tcp_seq seqNum, char *data, size_t dataLen) {
-	printf("START add_recv_info\n");
+	//printf("START add_recv_info\n");
 	//get spot in array
 	recv_info **cursor = ctx->recv_array;
 	
 	
 	while(*cursor) {
-		printf("num in cursor: %d\n", (*cursor)->num);
+		//printf("num in cursor: %d\n", (*cursor)->num);
 		cursor++;
 	}
 	cursor = ctx->recv_array;
@@ -622,7 +622,7 @@ static void add_recv_info(context_t *ctx, tcp_seq seqNum, char *data, size_t dat
 	}
 	if(!bubble) {
 		// Easy insert!
-		printf("ezInsert\n");
+		//printf("ezInsert\n");
 		recv_info *info = (recv_info*) malloc(sizeof(recv_info));
 		info->num = seqNum;
 		info->data = (char*) malloc(sizeof(char) * dataLen);
@@ -633,7 +633,7 @@ static void add_recv_info(context_t *ctx, tcp_seq seqNum, char *data, size_t dat
 	}
 	if(bubble->num == seqNum) {
 		//Already have it!
-		printf("alreadyHave\n");
+		//printf("alreadyHave\n");
 		return;
 	}
 	//Gonna have to add it
@@ -653,23 +653,23 @@ static void add_recv_info(context_t *ctx, tcp_seq seqNum, char *data, size_t dat
 	
 	
 	
-	printf("END add_recv_array\n");
+	//printf("END add_recv_array\n");
 	cursor = ctx->recv_array;
 	while(*cursor) {
-		printf("num in cursor: %d\n", (*cursor)->num);
+		//printf("num in cursor: %d\n", (*cursor)->num);
 		cursor++;
 	}
 }
 
 char* join_recv_info(context_t *ctx, char *buf, size_t init_len, size_t *full_len) {
-	printf("join_recv_info\n");
+	//printf("join_recv_info\n");
 	tcp_seq next_seq = ctx->my_last_ack + init_len;
 	recv_info **cursor = ctx->recv_array;
 	*full_len = init_len;
 	size_t found = 0;
 	
 	while(*cursor) {
-		printf("while *cursor\n");
+		//printf("while *cursor\n");
 		if((*cursor)->num != next_seq) {
 			break;
 		}
@@ -682,7 +682,7 @@ char* join_recv_info(context_t *ctx, char *buf, size_t init_len, size_t *full_le
 	char *data = (char*) malloc(sizeof(char) * *full_len);
 	strncpy(data, buf, init_len);
 	for(size_t i = 0; i < found; i++) {
-		printf("for loop\n");
+		//printf("for loop\n");
 		strncpy(data + init_len, (*(cursor + i))->data, (*(cursor + i))->data_len);
 		init_len += (*(cursor + i))->data_len;
 		free((*(cursor + i))->data);
@@ -690,10 +690,10 @@ char* join_recv_info(context_t *ctx, char *buf, size_t init_len, size_t *full_le
 	}
 	memset(cursor, 0, sizeof(recv_info*) * found);
 	if(found) {
-		printf("JOINED TOGETHER %ld things!!!\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", found + 1);
+		//printf("JOINED TOGETHER %ld things!!!\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", found + 1);
 		cursor += found;
 		while(*cursor) {
-			printf("reset array\n");
+			//printf("reset array\n");
 			*(cursor - found) = *cursor;
 			*cursor = NULL;
 			cursor++;
@@ -704,16 +704,16 @@ char* join_recv_info(context_t *ctx, char *buf, size_t init_len, size_t *full_le
 }
 
 static timespec* next_resend(context_t *ctx) {
-	printf("next_resend was called\n");
-	printf("%ld sec, %ld nsec is curr timeout\n", ctx->timeout->tv_sec, ctx->timeout->tv_nsec);
+	//printf("next_resend was called\n");
+	//printf("%ld sec, %ld nsec is curr timeout\n", ctx->timeout->tv_sec, ctx->timeout->tv_nsec);
 	if(ctx->resend) {
 		return ctx->resend;
 	}
 	if(ctx->connection_state == CSTATE_WAIT_ON_PASSIVE) {
-		printf("setting curr\n");
+		//printf("setting curr\n");
 		ctx->resend = (struct timespec*) malloc(sizeof(struct timespec));
 		timespec_get(ctx->resend, TIME_UTC);
-		printf("set cur\n");
+		//printf("set cur\n");
 	}
 	return ctx->resend;
 }
@@ -736,9 +736,9 @@ static int check_if_resend(timespec resend, timespec current) {
 
 static int resend_packets(int sd, context_t *ctx) {
 	ctx->fails++;
-	printf("PlusOne fails: %d\n", ctx->fails);
+	//printf("PlusOne fails: %d\n", ctx->fails);
 	if(ctx->fails > MAXFAILS) {
-		printf("FAILFAILXXX\n");
+		//printf("FAILFAILXXX\n");
 		return -1;
 	}
 	// Resend ALL packets
@@ -746,13 +746,13 @@ static int resend_packets(int sd, context_t *ctx) {
 	sent_info **cursor = ctx->sent_array;
 	while(*cursor) {
 		sent = *cursor;
-		printf("Resending packet with num of %d and seq num of %d.\n", sent->num, ntohl(sent->header->th_seq));
+		//printf("Resending packet with num of %d and seq num of %d.\n", sent->num, ntohl(sent->header->th_seq));
 		stcp_network_send(sd, sent->header, STCPHEADER, sent->data, sent->data_len, NULL);
 		cursor++;
 	}
-	printf("Before set time: %ld sec, %ld nsec\n", ctx->resend->tv_sec, ctx->resend->tv_nsec);
+	//printf("Before set time: %ld sec, %ld nsec\n", ctx->resend->tv_sec, ctx->resend->tv_nsec);
 	set_timeout(ctx->resend, ctx, ctx->fails);
-	printf("After set time: %ld sec, %ld nsec\n", ctx->resend->tv_sec, ctx->resend->tv_nsec);
+	//printf("After set time: %ld sec, %ld nsec\n", ctx->resend->tv_sec, ctx->resend->tv_nsec);
 	return 0;
 }
 
@@ -763,13 +763,13 @@ static void resend_packet(int sd, context_t *ctx) {
 		return;
 	}
 	ctx->acks = 0;
-	printf("Resending based on 3 acks packet with num of %d and seq num of %d.\n", sent->num, ntohl(sent->header->th_seq));
+	//printf("Resending based on 3 acks packet with num of %d and seq num of %d.\n", sent->num, ntohl(sent->header->th_seq));
 	ctx->sent++;
-	printf("I have now sent %ld data packets!\n", ctx->sent);
+	//printf("I have now sent %ld data packets!\n", ctx->sent);
 	stcp_network_send(sd, sent->header, STCPHEADER, sent->data, sent->data_len, NULL);
-	printf("Before set time: %ld sec, %ld nsec\n", ctx->resend->tv_sec, ctx->resend->tv_nsec);
+	//printf("Before set time: %ld sec, %ld nsec\n", ctx->resend->tv_sec, ctx->resend->tv_nsec);
 	set_timeout(ctx->resend, ctx, ctx->fails);
-	printf("After set time: %ld sec, %ld nsec\n", ctx->resend->tv_sec, ctx->resend->tv_nsec);
+	//printf("After set time: %ld sec, %ld nsec\n", ctx->resend->tv_sec, ctx->resend->tv_nsec);
 }
 
 static void set_window_max(tcp_seq ack_num, int win, context_t *ctx) {
@@ -782,7 +782,7 @@ static int can_send(context_t *ctx) {
 	if(ctx->recv_max >= ctx->my_sequence_num) {
 		return ANY_EVENT;
 	} else {
-		printf("Overloading the receiver! They say they can only take %d, and I want to send %d!\n", ctx->recv_max, ctx->my_sequence_num);
+		//printf("Overloading the receiver! They say they can only take %d, and I want to send %d!\n", ctx->recv_max, ctx->my_sequence_num);
 		return APP_CLOSE_REQUESTED | NETWORK_DATA;
 	}
 }
@@ -814,16 +814,16 @@ static void send_second_fin(int sd, context_t *ctx) {
 
 
 /**********************************************************************/
-/* our_dprintf
+/* our_d//printf
  *
  * Send a formatted message to stdout.
  * 
- * format               A printf-style format string.
+ * format               A //printf-style format string.
  *
- * This function is equivalent to a printf, but may be
+ * This function is equivalent to a //printf, but may be
  * changed to log errors to a file if desired.
  *
- * Calls to this function are generated by the dprintf amd
+ * Calls to this function are generated by the d//printf amd
  * dperror macros in transport.h
  */
 void our_dprintf(const char *format,...)
