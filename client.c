@@ -242,7 +242,10 @@ loop_until_end(int sd)
             {
                 break;
             }
-
+for(int i = 0; i < got; i++) {
+	printf("%c\n", line[i]);
+	printf("breakcli\n");
+}
             if (got < to_read)
             {
                 to_read = got;

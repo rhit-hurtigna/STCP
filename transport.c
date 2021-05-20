@@ -224,7 +224,12 @@ static void control_loop(mysocket_t sd, context_t *ctx)
 static void app_to_network(mysocket_t sd, context_t* ctx) {
 	char *buf = (char*) malloc(MAXPAYLOAD);
 	size_t read = stcp_app_recv(sd, buf, MAXPAYLOAD);
-	
+	printf("sending %ld bytes of:\n", read);
+	for(size_t i = 0; i < read; i++) {
+		printf("%c\n", buf[i]);
+		printf("break\n");
+	}
+	printf("\n\n\n\n\n\n\n\n");
 	tcphdr* send_header = header(ctx->my_sequence_num, ctx->my_last_ack, WINDOW);
 	ctx->sent++;
 	printf("I have now sent %ld data packets!\n", ctx->sent);
@@ -262,6 +267,7 @@ static void network_to_app(mysocket_t sd, char *buf, tcphdr *recv_header, int re
 		return;
 	}
 	ctx->recv++;
+	printf("\n\n\n\n\n\n");
 	printf("I have now received %ld data packets!\n", ctx->recv);
 	if(ntohl(recv_header->th_seq) > ctx->my_last_ack) {
 		printf("Out of order! SCREAM LOUDLY!\n");
